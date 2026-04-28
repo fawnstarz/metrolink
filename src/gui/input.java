@@ -1,4 +1,4 @@
-package data;
+package gui;
 
 public class input {
 
