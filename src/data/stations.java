@@ -1,5 +1,6 @@
 package data;
 
+// necessary imports
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,9 +17,8 @@ public class stations {
     public void run() {
         // location of csv file (needs future updating due to runtime issues)
         String csv = "/Users/aimee/Coding/Uni/metrolink/bin/data/metrolink_times.csv";
-        // 
+        // reads & buffers text from character input stream
         BufferedReader br = null;
-        //
         String line = "";
         // string array to hold all unique names of train stations
         String[] names = new String[0];
