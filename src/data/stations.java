@@ -6,11 +6,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class stations {
+public class Stations {
+    // string array to hold all unique names of train stations
+    String[] names = new String[0];
+
     // main entrypoint for java file, creates instance of stations class & stores as obj to run
     public static void main(String[] args) {
-        stations obj = new stations();
+        Stations obj = new Stations();
         obj.run();
+    }
+
+    // simple get method to access names array
+    public String[] getNames() {
+        return names;
     }
 
     // main run class where the csv file gets parsed
@@ -20,8 +28,6 @@ public class stations {
         // reads & buffers text from character input stream
         BufferedReader br = null;
         String line = "";
-        // string array to hold all unique names of train stations
-        String[] names = new String[0];
 
         // try-catch to help reduce & flag runtime errors
         try {
