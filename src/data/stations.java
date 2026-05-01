@@ -21,6 +21,14 @@ public class Stations {
         return names;
     }
 
+    // simple checking method to see if a certain value exists within the names array
+    public boolean contains(String input) {
+    for (String n : names) {
+        if (n.equalsIgnoreCase(input)) return true;
+    }
+    return false;
+}
+
     // main run class where the csv file gets parsed
     public void run() {
         // location of csv file (needs future updating due to runtime issues)
