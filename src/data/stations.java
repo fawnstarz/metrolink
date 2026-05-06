@@ -68,11 +68,6 @@ public class Stations {
                     names[names.length - 1] = name;
                 }
             }
-
-            // temporary check, print results to confirm it's working
-            System.out.println("Total unique stations: " + names.length);
-            for (String n : names) System.out.println(n);
-
         } catch (IOException io) {
             // catch errors via ioexception
             System.out.println(io);

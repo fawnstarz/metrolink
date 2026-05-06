@@ -1,13 +1,19 @@
+import data.Graph;
 import data.Stations;
 import gui.Input;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import model.Parsing;
 
 public class App {
     public static void main(String[] args) {
         // new instance of the Stations class so necessary logic for list of stations runs
         Stations s = new Stations();
         s.run();
+
+        Parsing parser = new Parsing();
+        Graph graph = parser.parse("/Users/aimee/Coding/Uni/metrolink/bin/data/metrolink_times.csv");
+        graph.print();
 
         //
         SwingUtilities.invokeLater(() -> {
