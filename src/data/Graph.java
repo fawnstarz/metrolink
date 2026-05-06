@@ -29,7 +29,7 @@ public class Graph {
         for (String node : adjacency.keySet()) {
             System.out.print(node + " -> ");
             for (Edge i : adjacency.get(node)) {
-                System.out.print(i.departure + "(" + i.time + ") ");
+                System.out.print(i.arrival + "(" + i.time + ") ");
             }
             System.out.println();
         }
