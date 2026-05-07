@@ -40,13 +40,23 @@ public class Input extends JPanel{
         RouteCalc route   = dijkstra.getRoute(dep, arr);
 
         if (route.path.isEmpty()) {
-            result.setText("No route found between " + dep + " and " + arr);
+            result.setText("no route found between " + dep + " and " + arr);
             return;
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Route: ").append(String.join(" → ", route.path)).append("\n");
-        sb.append("Total time: ").append(route.total).append(" minutes");
+        sb.append("route: ").append(String.join(" → ", route.path)).append("\n");
+        sb.append("total time: ").append(route.total).append(" minutes\n");
+
+        if (route.lineChanges.isEmpty()) {
+            sb.append("no changes required");
+        } else {
+            sb.append("line changes (" + route.lineChanges.size() + "):\n");
+            for (int i = 0; i < route.lineChanges.size(); i++) {
+                sb.append(" ").append(i + 1).append(". ").append(route.lineChanges.get(i)).append("\n");
+            }
+        }
+
         result.setText(sb.toString());
     });
         // assigns input/submit/response fields into the JPanel for interactivity

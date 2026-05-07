@@ -34,4 +34,14 @@ public class Graph {
             System.out.println();
         }
     }
+
+    private Map<String, String> stationLines = new HashMap<>();
+
+    public void setStationLines(Map<String, String> stationLines) {
+        this.stationLines = stationLines;
+    }
+
+    public String getLine(String station) {
+        return stationLines.getOrDefault(station, "none");
+    }
 }

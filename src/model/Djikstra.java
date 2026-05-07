@@ -43,9 +43,18 @@ public class Djikstra {
         }
 
         if (path.isEmpty() || !path.get(0).equals(departure)) {
-            return new RouteCalc(Collections.emptyList(), -1.0);
+            return new RouteCalc(Collections.emptyList(), -1.0, Collections.emptyList());
         }
 
-        return new RouteCalc(path, times.get(arrival));
+        List<String> lineChanges = new ArrayList<>();
+        for (int i = 0; i < path.size() - 1; i++) {
+            String lineA = graph.getLine(path.get(i));
+            String lineB = graph.getLine(path.get(i + 1));
+            if (!lineA.equals(lineB)) {
+                lineChanges.add("change at " + path.get(i + 1) + " from " + lineA + " to " + lineB);
+            }
+        }
+
+        return new RouteCalc(path, times.get(arrival), lineChanges);
     }
 }
