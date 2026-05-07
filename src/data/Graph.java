@@ -7,7 +7,7 @@ public class Graph {
     private Map<String, List<Edge>> adjacency = new HashMap<>();
     
     // function to assign new edges onto the graph due to undirected nature
-    public void newEdge(String departure, String arrival, int time) {
+    public void newEdge(String departure, String arrival, double time) {
         // checks if station already has list of edges, if not then creates a new array list and adds the edge to it
         adjacency.computeIfAbsent(departure, i -> new ArrayList<>()).add(new Edge(departure, arrival, time));
         adjacency.computeIfAbsent(arrival, i -> new ArrayList<>()).add(new Edge(arrival, departure, time));

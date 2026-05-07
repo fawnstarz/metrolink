@@ -21,7 +21,7 @@ public class Parsing {
 
                 String departure = cols[0].trim();
                 String arrival = cols[1].trim();
-                int time = Integer.parseInt(cols[2].trim());
+                double time = Double.parseDouble(cols[2].trim());
 
                 graph.newEdge(departure, arrival, time);
             }

@@ -21,7 +21,7 @@ public class App {
             JFrame frame = new JFrame("Metrolink Planner");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             // adds interactable elements from input class to the JFrame
-            frame.add(new Input(s));
+            frame.add(new Input(s, graph));
             frame.pack();
             frame.setVisible(true);
         });
