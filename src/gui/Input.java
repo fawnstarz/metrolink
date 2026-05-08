@@ -58,7 +58,7 @@ public class Input extends JPanel {
         add(departure);
         add(new JLabel("Arrival:"));
         add(arrival);
-        add(fastestBtn);  // ✅ add radio buttons to panel
+        add(fastestBtn);
         add(fewestBtn);
         add(check);
         add(new JScrollPane(result));
