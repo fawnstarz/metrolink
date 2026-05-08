@@ -1,0 +1,50 @@
+package data;
+import java.util.*;
+
+// class for the adjacency matrix itself
+public class Graph {
+    // hash map used as adjacency matrix base due to key/pair functionality, departure->arrival and time
+    private Map<String, List<Edge>> adjacency = new HashMap<>();
+    
+    // function to assign new edges onto the graph due to undirected nature
+    public void newEdge(String departure, String arrival, double time, String line) {
+        // checks if station already has list of edges, if not then creates a new array list and adds the edge to it
+        adjacency.computeIfAbsent(departure, i -> new ArrayList<>()).add(new Edge(departure, arrival, time, line));
+        adjacency.computeIfAbsent(arrival, i -> new ArrayList<>()).add(new Edge(arrival, departure, time, line));
+    }
+    
+    // function to return all edges leaving a station
+    public List<Edge> getAdjacent(String node) {
+        // if station doesn't exist, returns empty list 
+        return adjacency.getOrDefault(node, new ArrayList<>());
+    }
+
+    // returns every station name in graph
+    public Set<String> getNodes() {
+        return adjacency.keySet();
+    }
+
+    // function to print out all valuesw within the adjacency list (for trial & error purposes)
+    public void print() {
+        for (String node : adjacency.keySet()) {
+            System.out.print(node + " -> ");
+            for (Edge i : adjacency.get(node)) {
+                System.out.print(i.arrival + "(" + i.time + ") ");
+            }
+            System.out.println();
+        }
+    }
+
+    // map that records which lines each station falls on
+    private Map<String, Set<String>> stationLines = new HashMap<>();
+
+    // setter to assign built stationlines map from parsing.java for use externally
+    public void setStationLines(Map<String, Set<String>> stationLines) {
+        this.stationLines = stationLines;
+    }
+
+    // returns all lines of a given station
+    public Set<String> getLine(String station) {
+        return stationLines.getOrDefault(station, new HashSet<>());
+    }
+}
