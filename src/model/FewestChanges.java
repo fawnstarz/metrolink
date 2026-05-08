@@ -38,6 +38,10 @@ public class FewestChanges {
 
             // main difference between djikstra's and fewest changes
             for (Edge adjacent : graph.getAdjacent(currentStation)) {
+
+                // again skips over closed stations
+                if (adjacent.closed) continue;
+
                 boolean isChange = !currentLine.isEmpty() && !adjacent.line.equals(currentLine);
                 // counts the cost of each change as int value of 1, hard coding a penalty the algorithm is hesitant to take rather than a "fake" floating point penatly
                 int    changeCost = isChange ? 1   : 0;

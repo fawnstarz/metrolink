@@ -45,6 +45,9 @@ public class Djikstra {
 
             // 
             for (Edge adjacent : graph.getAdjacent(currentStation)) {
+
+                if (adjacent.closed) continue;
+
                 boolean isChange = !currentLine.isEmpty() && !adjacent.line.equals(currentLine);
                 double penalty = isChange ? 5.0 : 0.0;
                 double transfer = isChange ? 2.0 : 0.0;
