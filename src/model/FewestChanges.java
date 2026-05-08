@@ -8,11 +8,14 @@ import java.util.*;
 public class FewestChanges {
     private final Graph graph;
 
+    // used djikstra's algorithm code base but made few tweaks to logic to avoid changes where possible
     public FewestChanges(Graph graph) {
         this.graph = graph;
     }
 
+    // main calculation method for getting the shortest route
     public RouteCalc getRoute(String departure, String arrival) {
+        // more or less identical set up to the djikstra's algorithm minus the weighted cost logic
         Map<String, Integer> changes  = new HashMap<>();
         Map<String, Double>  times    = new HashMap<>();
         Map<String, String>  previous = new HashMap<>();
@@ -33,14 +36,17 @@ public class FewestChanges {
             String currentStation = current.split("\\|")[0];
             String currentLine    = current.split("\\|", -1)[1];
 
+            // main difference between djikstra's and fewest changes
             for (Edge adjacent : graph.getAdjacent(currentStation)) {
                 boolean isChange = !currentLine.isEmpty() && !adjacent.line.equals(currentLine);
+                // counts the cost of each change as int value of 1, hard coding a penalty the algorithm is hesitant to take rather than a "fake" floating point penatly
                 int    changeCost = isChange ? 1   : 0;
                 double transfer   = isChange ? 2.0 : 0.0; 
                 int    newChanges = currentChanges + changeCost;
                 double newTime    = currentTime + adjacent.time + transfer;
                 String nextState  = adjacent.arrival + "|" + adjacent.line;
 
+                // accepts a new state if it is fewer changes than the current state rather than djikstra's shortest time
                 if (newChanges < changes.getOrDefault(nextState, Integer.MAX_VALUE)) {
                     changes.put(nextState, newChanges);
                     times.put(nextState, newTime);
@@ -50,6 +56,8 @@ public class FewestChanges {
             }
         }
 
+
+        // again continous / more or less identical logic to djikstra in terms of final best arrival time calculations
         String bestArrival = null;
         int    bestChanges = Integer.MAX_VALUE;
         for (String state : changes.keySet()) {
