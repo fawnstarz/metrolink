@@ -15,10 +15,11 @@ public class Djikstra {
 
     // main algorithm to calculate the fastest available route, including set up for actual code
     public RouteCalc getRoute(String departure, String arrival) {
-        Map<String, Double> times = new HashMap<>(); // penalised times for pathfinding decisions 
-        Map<String, Double> realTimes = new HashMap<>(); // actual travel times
-        Map<String, String> previous = new HashMap<>(); // 
-        Map<String, String> lineUsed = new HashMap<>(); // train lines used to arrive at each state
+        // main variables for decision making, as well as tracking train lines used
+        Map<String, Double> times = new HashMap<>();
+        Map<String, Double> realTimes = new HashMap<>();
+        Map<String, String> previous = new HashMap<>();
+        Map<String, String> lineUsed = new HashMap<>(); 
 
         // priority queue used, returns state with lowest penalised time 
         PriorityQueue<String> pq = new PriorityQueue<>(
@@ -43,12 +44,13 @@ public class Djikstra {
             // assigns the current line to detect for line changes on the next edge
             String currentLine = lineUsed.getOrDefault(current, "");
 
-            // 
+            // retrieves neighboring stations to current station and calculates whether a change is necessary/the best option
             for (Edge adjacent : graph.getAdjacent(currentStation)) {
                 boolean isChange = !currentLine.isEmpty() && !adjacent.line.equals(currentLine);
-                double penalty = isChange ? 5.0 : 0.0;
+                double penalty = isChange ? 5.0 : 0.0; // penalises unnecessary transfers, only counting realistic & necessary ones
                 double transfer = isChange ? 2.0 : 0.0;
 
+                // formatted into penalised time (for calculation) and real time (for display)
                 double newTime = currentTime + adjacent.time + penalty;
                 double newReal = realTime + adjacent.time + transfer; 
 
@@ -65,7 +67,7 @@ public class Djikstra {
             }
         }
 
-        // 
+        // calculates the overall best arrival state as each train station can appear on multiple lines
         String bestArrival = null;
         double bestTime = Double.MAX_VALUE;
         for (String state : times.keySet()) {
@@ -80,7 +82,6 @@ public class Djikstra {
             return new RouteCalc(Collections.emptyList(), -1.0, Collections.emptyList(), Collections.emptyList());
         }
 
-        //
         List<String> path = new ArrayList<>();
         List<String> lines = new ArrayList<>();
         String step = bestArrival;
@@ -91,7 +92,7 @@ public class Djikstra {
             step = previous.get(step);
         }
 
-        // 
+        // if line changes are detected, then outputs them where necessary
         List<String> lineChanges = new ArrayList<>();
             for (int i = 0; i < lines.size() - 1; i++) {
                 String lineA = lines.get(i);
@@ -107,12 +108,12 @@ public class Djikstra {
         if (lines.size() > 1 && lines.get(0).isEmpty()) {
         lines.set(0, lines.get(1));
 }
-
         Map<String, String> stationLineMap = new HashMap<>();
         for (int i = 0; i < path.size(); i++) {
             stationLineMap.put(path.get(i), lines.get(i));
         }
 
+        // returns function with necessary variables
         return new RouteCalc(path, realTimes.get(bestArrival), lineChanges, lines);
     }
 }

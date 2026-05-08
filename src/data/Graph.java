@@ -24,7 +24,7 @@ public class Graph {
         return adjacency.keySet();
     }
 
-    // function to print out all valuesw within the adjacency list (for trial & error purposes)
+    // function to print out all valuesß within the adjacency list (for trial & error purposes)
     public void print() {
         for (String node : adjacency.keySet()) {
             System.out.print(node + " -> ");
