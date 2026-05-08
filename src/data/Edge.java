@@ -5,8 +5,9 @@ public class Edge {
     // variables to assign departure, arrival, time taken, and train line from CSV list for each station
     public final String departure;
     public final String arrival;
-    public final double time;
+    public double time; // not final if delays occur
     public final String line;
+    public boolean closed; // new variable for if station is closed
 
     // function assigning passed-in values from CSV file to related variables
     public Edge(String departure, String arrival, double time, String line) {
@@ -14,6 +15,7 @@ public class Edge {
         this.arrival = arrival;
         this.time = time;
         this.line = line;
+        this.closed = false;
     }
 
 }

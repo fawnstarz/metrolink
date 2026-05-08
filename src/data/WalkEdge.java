@@ -9,7 +9,7 @@ public class WalkEdge {
     public final boolean walking;
 
     // function assigning passed-in values from CSV file to related variables
-    public WalkEdge(String departure, String arrival, double time, boolean walking) {
+    public WalkEdge(String departure, String arrival, double time) {
         this.departure = departure;
         this.arrival = arrival;
         this.time = time;

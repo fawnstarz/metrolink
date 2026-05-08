@@ -47,4 +47,13 @@ public class Graph {
     public Set<String> getLine(String station) {
         return stationLines.getOrDefault(station, new HashSet<>());
     }
+    private Map<String, List<WalkEdge>> walkAdjacency = new HashMap<>();
+
+    public void addWalkEdge(String departure, String arrival, double time) {
+        walkAdjacency.computeIfAbsent(departure, k -> new ArrayList<>()).add(new WalkEdge(departure, arrival, time));
+    }
+
+    public List<WalkEdge> getWalkEdges(String node) {
+        return walkAdjacency.getOrDefault(node, new ArrayList<>());
+    }
 }

@@ -42,7 +42,7 @@ public class WalkParsing {
 
                         if (stationsRow.equals(stationCol)) continue;
 
-                        graph.addWalkingEdge(stationsRow. stationCol, walking);
+                        graph.addWalkEdge(stationsRow. stationCol, walking);
                     } 
                         // error catching in caawse issues with reafing walking time values in the file
                         catch (NumberFormatException e) {
