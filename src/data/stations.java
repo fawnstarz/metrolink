@@ -1,75 +1,72 @@
 package data;
 
-// necessary imports
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
 public class Stations {
-    // string array to hold all unique names of train stations
-    String[] names = new String[0];
+    // array of station names accessible by all methods
+    private String[] names = new String[0];
 
-    // main entrypoint for java file, creates instance of stations class & stores as obj to run
+    // initialises new instance of the stations object
     public static void main(String[] args) {
         Stations obj = new Stations();
         obj.run();
     }
 
-    // simple get method to access names array
+    // getter that returns all names for other functions if necessary
     public String[] getNames() {
         return names;
     }
 
-    // simple checking method to see if a certain value exists within the names array
+    // checks if a given station exists in the array already to avoid duplicates
     public boolean contains(String input) {
-    for (String n : names) {
-        if (n.equalsIgnoreCase(input)) return true;
+        for (String n : names) {
+            if (n.equalsIgnoreCase(input)) return true;
+        }
+        return false;
     }
-    return false;
-}
 
-    // main run class where the csv file gets parsed
+    // helper method to add a station if it doesn't already exist
+    private String[] addIfAbsent(String[] names, String name) {
+        // skip if first character isn't uppercase
+        if (name.isEmpty() || !Character.isUpperCase(name.charAt(0))) return names;
+        // skip if already exists
+        for (String n : names) {
+            if (n.equalsIgnoreCase(name)) return names;
+        }
+        // add to array
+        names = Arrays.copyOf(names, names.length + 1);
+        names[names.length - 1] = name;
+        return names;
+    }
+
+    // general run method for applying logic to a csv file
     public void run() {
-        // location of csv file (needs future updating due to runtime issues)
+        // setting file path, reader, and current line var
         String csv = "/Users/aimee/Coding/Uni/metrolink/bin/data/metrolink_times.csv";
-        // reads & buffers text from character input stream
         BufferedReader br = null;
         String line = "";
 
-        // try-catch to help reduce & flag runtime errors
         try {
-            // bufferedreader opens & reads the metrolink times csv file
+            // opens file, skips first row as not data
             br = new BufferedReader(new FileReader(csv));
-            br.readLine();
+            br.readLine(); 
 
-            // while loop which checks if the line inside the csv file is not empty
-            while ((line = br.readLine()) != null) { 
-                // only checks first item of each line of csv file + setting evaluation variable to false
-                String name = line.split(",")[0].trim();
-                boolean found = false;
+            // computes while the line being read in the csv file isn't empty
+            while ((line = br.readLine()) != null) {
+                String[] cols = line.split(",");
 
-                // checking if first letter is false to avoid including train lines in output
-                if (!Character.isUpperCase(name.charAt(0))) {
-                    found = true;
-                }
+                // skip line name rows and malformed rows
+                if (cols.length < 3 || cols[1].trim().isEmpty()) continue;
 
-                // checking if station name already exists to avoid duplicates
-                for (String n : names) {
-                    if (n.equalsIgnoreCase(name)) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                // adding unique station name to names array
-                if (!found) {
-                    names = Arrays.copyOf(names, names.length + 1);
-                    names[names.length - 1] = name;
-                }
+                // register both departure and arrival
+                names = addIfAbsent(names, cols[0].trim());
+                names = addIfAbsent(names, cols[1].trim());
             }
+
         } catch (IOException io) {
-            // catch errors via ioexception
             System.out.println(io);
         }
     }

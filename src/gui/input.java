@@ -1,5 +1,6 @@
 package gui;
 
+// imports yay
 import data.Graph;
 import data.Stations;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ public class Input extends JPanel{
         JTextArea result = new JTextArea(5, 30);
         result.setEditable(false);
 
+        // sets action listener so whenever button is clicked, inputted departure and arrival fields are read and assigned to variables
         check.addActionListener(e -> {
         String dep = departure.getText().trim();
         String arr = arrival.getText().trim();
@@ -35,34 +37,54 @@ public class Input extends JPanel{
             return;
         }
 
-        // only reaches here if both stations are valid
-        Djikstra dijkstra = new Djikstra(graph);
-        RouteCalc route   = dijkstra.getRoute(dep, arr);
+        // creates new djikstra instance once stations are valid with graph, runs algorithm
+        Djikstra djikstra = new Djikstra(graph);
+        RouteCalc route   = djikstra.getRoute(dep, arr);
 
+        // case if djikstra returns an empty path, aka no connections exist between the two stations
         if (route.path.isEmpty()) {
-            result.setText("no route found between " + dep + " and " + arr);
+            result.setText("No route foiund between" + dep + " and " + arr);
             return;
         }
 
+        // building output string to show time taken and route taken to user
         StringBuilder sb = new StringBuilder();
-        sb.append("route: ").append(String.join(" → ", route.path)).append("\n");
-        sb.append("total time: ").append(route.total).append(" minutes\n");
+        sb.append("Route:\n");
+
+        for (int i = 0; i < route.path.size(); i++) {
+            String station  = route.path.get(i);
+            String line     = route.lines.get(i);
+
+            if (i > 0) {
+                String prevLine = route.lines.get(i - 1);
+                if (!prevLine.isEmpty() && !line.isEmpty() && !prevLine.equals(line)) {
+                    sb.append("  ").append(station).append(" (").append(prevLine).append(")\n");
+                    sb.append("*Change to ").append(line).append(" line*\n");
+                }
+            }
+
+            // prints station on current line (new line if change occurred)
+            sb.append("  ").append(station).append(" (").append(line).append(")\n");
+        }
+
+        sb.append("Time Taken: ").append(String.format("%.1f", route.total)).append(" minutes\n");
 
         if (route.lineChanges.isEmpty()) {
-            sb.append("no changes required");
+            sb.append("No changes required");
         } else {
-            sb.append("line changes (" + route.lineChanges.size() + "):\n");
+            sb.append("Lie changes (").append(route.lineChanges.size()).append("):\n");
             for (int i = 0; i < route.lineChanges.size(); i++) {
-                sb.append(" ").append(i + 1).append(". ").append(route.lineChanges.get(i)).append("\n");
+                sb.append(" ").append(i + 1).append(". ")
+                .append(route.lineChanges.get(i)).append("\n");
             }
         }
 
         result.setText(sb.toString());
     });
         // assigns input/submit/response fields into the JPanel for interactivity
-        add(new JLabel("departure:"));
+        add(new JLabel("Departure Station:"));
         add(departure);
-        add(new JLabel("arrival:"));
+        add(new JLabel("Arrival Station:"));
         add(arrival);
         add(check);
         add(new JScrollPane(result));
